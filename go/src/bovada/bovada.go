@@ -1,11 +1,10 @@
 package main
 
 import (
-	//"os"
-	//"bufio"
+	"os"
+	"bufio"
 	"fmt"
 	"strings"
-	"strconv"
 	"time"
 
     "github.com/sclevine/agouti"
@@ -13,8 +12,6 @@ import (
     "gopkg.in/natefinch/lumberjack.v2"
     "go.uber.org/zap/zapcore"
 )
-
-
 
 func navigatePatiently(url string, p *agouti.Page, logger *zap.Logger) {
 	if err := p.Navigate(url); err != nil {
@@ -24,24 +21,20 @@ func navigatePatiently(url string, p *agouti.Page, logger *zap.Logger) {
 }
 
 func getBovadaMLBEventCount(p *agouti.Page, logger *zap.Logger) {
-	attempts := 0
-	for attempts < 3 {
-		attempts++
-		url := "https://sports.bovada.lv/baseball/mlb/game-lines-market-group"
-		navigatePatiently(url, p, logger)
-		
-		//get event count
-		eventCntElem := p.First("#spaNavigationComponents_content_center > div > section > div > div > h2")
-		eventCntTxt, _ := eventCntElem.Text()
-		eventCnt := strings.Fields(eventCntTxt)
+	url := "https://sports.bovada.lv/baseball/mlb/game-lines-market-group"
+	navigatePatiently(url, p, logger)
+	
+	//get event count
+	eventCntElem := p.First("#spaNavigationComponents_content_center > div > section > div > div > h2")
+	eventCntTxt, _ := eventCntElem.Text()
+	eventCnt := strings.Fields(eventCntTxt)
 
-		//print to console, or retry
-		if len(eventCnt) > 0 {
-			logger.Info("Event count: " + eventCnt[0])
-			break
-		} else {
-			logger.Info("No events found, attempt: " + strconv.Itoa(attempts))
-		}
+	if len(eventCnt) > 0 {
+		logger.Info("Event count: " + eventCnt[0])
+	} else {
+		logger.Info("No events found, saving page source.")
+		path := "/tmp/" + time.Now().Format("2006-01-02_150405") + ".html"
+		saveSource(p, logger, path)
 	}
 }
 
@@ -57,11 +50,32 @@ func lumberjackZapHook(e zapcore.Entry) error {
     return nil
 }
 
+func saveSource(p *agouti.Page, logger *zap.Logger, path string) {
+	f, err := os.Create(path)
+	if err != nil {
+		logger.Fatal("Failed to create file")
+	}
+
+	defer f.Close()
+
+	ps, err := p.HTML()
+
+	w := bufio.NewWriter(f)
+	n, err := w.WriteString(ps)
+	if err != nil {
+		logger.Fatal("Failed to write string")
+	}
+	fmt.Printf("wrote %d bytesn", n)
+
+	w.Flush()
+}
+
 func main() {
 	logger, _ := zap.NewProduction(zap.Hooks(lumberjackZapHook))
 	defer logger.Sync()
 
 	driver := agouti.ChromeDriver()
+	// headless browser
 	// driver := agouti.ChromeDriver(
 	//   agouti.ChromeOptions("args", []string{"--headless", "--disable-gpu", "--no-sandbox"}),
 	// )
@@ -86,22 +100,3 @@ func main() {
 		logger.Fatal("Failed to stop WebDriver")
 	}
 }
-
-	// //sample code to write page source to a file
-	// f, err := os.Create("bovada.html")
-	// if err != nil {
-	// 	log.Fatal("Failed to create file:", err)
-	// }
-
-	// defer f.Close()
-
-	// ps, err := page.HTML()
-
-	// w := bufio.NewWriter(f)
-	// n, err := w.WriteString(ps)
-	// if err != nil {
-	// 	log.Fatal("Failed to write string:", err)
-	// }
-	// fmt.Printf("wrote %d bytesn", n)
-
-	// w.Flush()
