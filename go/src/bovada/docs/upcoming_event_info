@@ -1,0 +1,154 @@
+--upcoming event 
+
+<header class="gameline-event col-md-5 col-sm-16 col-xs-16">
+  <!-- ngIf: displayLiveBadge -->
+  <!-- ngIf: ::hasStarted && showGameTimeInfo() -->
+  <!-- ngIf: ::isMainPeriodNotLiveMarketline --><time ng-if="::isMainPeriodNotLiveMarketline" class="ng-binding ng-scope">SUN 8:08p</time><!-- end ngIf: ::isMainPeriodNotLiveMarketline -->
+  <!-- ngIf: ::isNotMainPeriodNotLiveMarketline -->
+  <!-- ngIf: showScores -->
+  <!-- ngIf: startingSoon || hasWagerLimit --><figure role="presentation" ng-if="startingSoon || hasWagerLimit" class="ng-scope">
+    <ul role="list" class="event-extras">
+      <!-- ngIf: startingSoon --><li role="listitem" class="starting-soon ng-scope" ng-if="startingSoon">
+        <button role="button" class="ng-binding">Coming soon</button>
+        <p class="tooltip-msg ng-binding">Live Betting Available</p>
+      </li><!-- end ngIf: startingSoon -->
+      <!-- ngIf: hasWagerLimit -->
+    </ul>
+  </figure><!-- end ngIf: startingSoon || hasWagerLimit -->
+  <!-- ngIf: ::isMainPeriod --><p ng-if="::isMainPeriod" class="hidden-md hidden-lg ng-binding ng-scope">MLB</p><!-- end ngIf: ::isMainPeriod -->
+  <!-- ngIf: ::isNotMainPeriodLiveMarketline -->
+  <!-- ngRepeat: competitor in marketline.competitors | orderBy: competitorOrder(marketline) : marketline.awayTeamFirst track by competitor.id --><h3 role="heading" ng-repeat-start="competitor in marketline.competitors | orderBy: competitorOrder(marketline) : marketline.awayTeamFirst track by competitor.id " class="ng-binding ng-scope">New York Mets</h3>
+  <!-- ngIf: competitor.playerName --><h4 ng-repeat-end="" ng-if="competitor.playerName" class="ng-binding ng-scope">Matt Harvey (R)</h4><!-- end ngIf: competitor.playerName --><!-- end ngRepeat: competitor in marketline.competitors | orderBy: competitorOrder(marketline) : marketline.awayTeamFirst track by competitor.id --><h3 role="heading" ng-repeat-start="competitor in marketline.competitors | orderBy: competitorOrder(marketline) : marketline.awayTeamFirst track by competitor.id " class="ng-binding ng-scope">Washington Nationals</h3>
+  <!-- ngIf: competitor.playerName --><h4 ng-repeat-end="" ng-if="competitor.playerName" class="ng-binding ng-scope">Tanner Roark (R)</h4><!-- end ngIf: competitor.playerName --><!-- end ngRepeat: competitor in marketline.competitors | orderBy: competitorOrder(marketline) : marketline.awayTeamFirst track by competitor.id -->
+</header>
+
+-- odds
+<section class="col-md-8 col-sm-16 col-xs-16 gameline-grid">
+  <header class="market-headers">
+    <ul role="list">
+      <!-- ngRepeat: market in defaultMarkets track by $index --><li role="listitem" ng-repeat="market in defaultMarkets track by $index" ng-class="{'market-singles-only': market.isSingleOnly &amp;&amp; !isSingleOnly}" class="ng-scope">
+        <h4 role="heading" swc-default-market-title="" swc-sport="marketline.sport" swc-default-market-type="market.mainMarketType" swc-tooltip="" class="ng-binding ng-isolate-scope">Runline</h4>
+        <!-- ngIf: market.isSingleOnly && !isSingleOnly -->
+      </li><!-- end ngRepeat: market in defaultMarkets track by $index --><li role="listitem" ng-repeat="market in defaultMarkets track by $index" ng-class="{'market-singles-only': market.isSingleOnly &amp;&amp; !isSingleOnly}" class="ng-scope">
+        <h4 role="heading" swc-default-market-title="" swc-sport="marketline.sport" swc-default-market-type="market.mainMarketType" swc-tooltip="" class="ng-binding ng-isolate-scope">Moneyline</h4>
+        <!-- ngIf: market.isSingleOnly && !isSingleOnly -->
+      </li><!-- end ngRepeat: market in defaultMarkets track by $index --><li role="listitem" ng-repeat="market in defaultMarkets track by $index" ng-class="{'market-singles-only': market.isSingleOnly &amp;&amp; !isSingleOnly}" class="ng-scope">
+        <h4 role="heading" swc-default-market-title="" swc-sport="marketline.sport" swc-default-market-type="market.mainMarketType" swc-tooltip="" class="ng-binding ng-isolate-scope">Total</h4>
+        <!-- ngIf: market.isSingleOnly && !isSingleOnly -->
+      </li><!-- end ngRepeat: market in defaultMarkets track by $index -->
+    </ul>
+  </header>
+  <header class="event-shortnames">
+    <ul role="list">
+      <!-- ngRepeat: competitor in marketline.competitors | orderBy: competitorOrder(marketline) : !!marketline.awayTeamFirst track by competitor.id --><li role="listitem" ng-repeat="competitor in marketline.competitors | orderBy: competitorOrder(marketline) : !!marketline.awayTeamFirst track by competitor.id" class="ng-scope">
+        <h4 role="heading" class="ng-binding">NYM</h4>
+      </li><!-- end ngRepeat: competitor in marketline.competitors | orderBy: competitorOrder(marketline) : !!marketline.awayTeamFirst track by competitor.id --><li role="listitem" ng-repeat="competitor in marketline.competitors | orderBy: competitorOrder(marketline) : !!marketline.awayTeamFirst track by competitor.id" class="ng-scope">
+        <h4 role="heading" class="ng-binding">WAS</h4>
+      </li><!-- end ngRepeat: competitor in marketline.competitors | orderBy: competitorOrder(marketline) : !!marketline.awayTeamFirst track by competitor.id -->
+      <!-- ngIf: displayDraw -->
+    </ul>
+  </header>
+  <!-- ngRepeat: market in defaultMarkets track by $index --><ul role="list" ng-class="{'suspended-market': market.isSuspended}" ng-repeat="market in defaultMarkets track by $index" swc-outcomes="market.outcomes" swc-marketline="marketline" swc-market="market" class="ng-isolate-scope">
+  <!-- ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index --><!-- ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><li ng-repeat="outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index" ng-if="showOutcome(outcome) || showOutcomePlaceholder(outcome)" ng-class="{'col-md-8 col-sm-8 col-xs-8': market.has2ColumnsSnakeLayout, 'draw': displayDraw}" class="ng-scope">
+    <!-- ngIf: showOutcome(outcome) --><button role="button" ng-click="toggleSelection()" ng-disabled="isDisabled()" ng-class="{
+    'suspended-outcome': isSuspended(),
+    'selected-outcome':  outcome.isSelected,
+    'line-restricted':   outcome.lineQualityDescription == lineQualityTypes.RESTRICTED || outcome.lineQualityDescription == lineQualityTypes.EARLY_LINE,
+    'line-enhanced':     outcome.lineQualityDescription == lineQualityTypes.ENHANCED,
+    'price-increase':    outcome.price.hasIncreased(),
+    'price-decrease':    outcome.price.hasDecreased(),
+    'enabled-outcome':  !isDisabled(),
+    'no-price':         !outcome.price
+  }" ng-if="showOutcome(outcome)" swc-marketline="marketline" swc-market="market" swc-outcome="outcome" class="ng-isolate-scope enabled-outcome price-increase">
+  <!-- ngIf: market.hasPropositionLayout -->
+  <!-- ngIf: event.isDefault && outcome.price.handicap --><span ng-if="event.isDefault &amp;&amp; outcome.price.handicap" class="ng-binding ng-scope">+1½</span><!-- end ngIf: event.isDefault && outcome.price.handicap -->
+  <span ng-bind="outcome | outcomePrice: {marketType: market.mainMarketType, placeholder: '-', showHandicap: !event.isDefault}" class="ng-binding">(-130)</span>
+</button><!-- end ngIf: showOutcome(outcome) -->
+    <!-- ngIf: showOutcomePlaceholder(outcome) -->
+  </li><!-- end ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><!-- end ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index --><!-- ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><li ng-repeat="outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index" ng-if="showOutcome(outcome) || showOutcomePlaceholder(outcome)" ng-class="{'col-md-8 col-sm-8 col-xs-8': market.has2ColumnsSnakeLayout, 'draw': displayDraw}" class="ng-scope">
+    <!-- ngIf: showOutcome(outcome) --><button role="button" ng-click="toggleSelection()" ng-disabled="isDisabled()" ng-class="{
+    'suspended-outcome': isSuspended(),
+    'selected-outcome':  outcome.isSelected,
+    'line-restricted':   outcome.lineQualityDescription == lineQualityTypes.RESTRICTED || outcome.lineQualityDescription == lineQualityTypes.EARLY_LINE,
+    'line-enhanced':     outcome.lineQualityDescription == lineQualityTypes.ENHANCED,
+    'price-increase':    outcome.price.hasIncreased(),
+    'price-decrease':    outcome.price.hasDecreased(),
+    'enabled-outcome':  !isDisabled(),
+    'no-price':         !outcome.price
+  }" ng-if="showOutcome(outcome)" swc-marketline="marketline" swc-market="market" swc-outcome="outcome" class="ng-isolate-scope enabled-outcome price-decrease">
+  <!-- ngIf: market.hasPropositionLayout -->
+  <!-- ngIf: event.isDefault && outcome.price.handicap --><span ng-if="event.isDefault &amp;&amp; outcome.price.handicap" class="ng-binding ng-scope">-1½</span><!-- end ngIf: event.isDefault && outcome.price.handicap -->
+  <span ng-bind="outcome | outcomePrice: {marketType: market.mainMarketType, placeholder: '-', showHandicap: !event.isDefault}" class="ng-binding">(+110)</span>
+</button><!-- end ngIf: showOutcome(outcome) -->
+    <!-- ngIf: showOutcomePlaceholder(outcome) -->
+  </li><!-- end ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><!-- end ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index -->
+</ul><!-- end ngRepeat: market in defaultMarkets track by $index --><ul role="list" ng-class="{'suspended-market': market.isSuspended}" ng-repeat="market in defaultMarkets track by $index" swc-outcomes="market.outcomes" swc-marketline="marketline" swc-market="market" class="ng-isolate-scope">
+  <!-- ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index --><!-- ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><li ng-repeat="outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index" ng-if="showOutcome(outcome) || showOutcomePlaceholder(outcome)" ng-class="{'col-md-8 col-sm-8 col-xs-8': market.has2ColumnsSnakeLayout, 'draw': displayDraw}" class="ng-scope">
+    <!-- ngIf: showOutcome(outcome) --><button role="button" ng-click="toggleSelection()" ng-disabled="isDisabled()" ng-class="{
+    'suspended-outcome': isSuspended(),
+    'selected-outcome':  outcome.isSelected,
+    'line-restricted':   outcome.lineQualityDescription == lineQualityTypes.RESTRICTED || outcome.lineQualityDescription == lineQualityTypes.EARLY_LINE,
+    'line-enhanced':     outcome.lineQualityDescription == lineQualityTypes.ENHANCED,
+    'price-increase':    outcome.price.hasIncreased(),
+    'price-decrease':    outcome.price.hasDecreased(),
+    'enabled-outcome':  !isDisabled(),
+    'no-price':         !outcome.price
+  }" ng-if="showOutcome(outcome)" swc-marketline="marketline" swc-market="market" swc-outcome="outcome" class="ng-isolate-scope enabled-outcome price-increase">
+  <!-- ngIf: market.hasPropositionLayout -->
+  <!-- ngIf: event.isDefault && outcome.price.handicap -->
+  <span ng-bind="outcome | outcomePrice: {marketType: market.mainMarketType, placeholder: '-', showHandicap: !event.isDefault}" class="ng-binding">+155</span>
+</button><!-- end ngIf: showOutcome(outcome) -->
+    <!-- ngIf: showOutcomePlaceholder(outcome) -->
+  </li><!-- end ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><!-- end ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index --><!-- ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><li ng-repeat="outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index" ng-if="showOutcome(outcome) || showOutcomePlaceholder(outcome)" ng-class="{'col-md-8 col-sm-8 col-xs-8': market.has2ColumnsSnakeLayout, 'draw': displayDraw}" class="ng-scope">
+    <!-- ngIf: showOutcome(outcome) --><button role="button" ng-click="toggleSelection()" ng-disabled="isDisabled()" ng-class="{
+    'suspended-outcome': isSuspended(),
+    'selected-outcome':  outcome.isSelected,
+    'line-restricted':   outcome.lineQualityDescription == lineQualityTypes.RESTRICTED || outcome.lineQualityDescription == lineQualityTypes.EARLY_LINE,
+    'line-enhanced':     outcome.lineQualityDescription == lineQualityTypes.ENHANCED,
+    'price-increase':    outcome.price.hasIncreased(),
+    'price-decrease':    outcome.price.hasDecreased(),
+    'enabled-outcome':  !isDisabled(),
+    'no-price':         !outcome.price
+  }" ng-if="showOutcome(outcome)" swc-marketline="marketline" swc-market="market" swc-outcome="outcome" class="ng-isolate-scope enabled-outcome price-decrease">
+  <!-- ngIf: market.hasPropositionLayout -->
+  <!-- ngIf: event.isDefault && outcome.price.handicap -->
+  <span ng-bind="outcome | outcomePrice: {marketType: market.mainMarketType, placeholder: '-', showHandicap: !event.isDefault}" class="ng-binding">-180</span>
+</button><!-- end ngIf: showOutcome(outcome) -->
+    <!-- ngIf: showOutcomePlaceholder(outcome) -->
+  </li><!-- end ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><!-- end ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index -->
+</ul><!-- end ngRepeat: market in defaultMarkets track by $index --><ul role="list" ng-class="{'suspended-market': market.isSuspended}" ng-repeat="market in defaultMarkets track by $index" swc-outcomes="market.outcomes" swc-marketline="marketline" swc-market="market" class="ng-isolate-scope">
+  <!-- ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index --><!-- ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><li ng-repeat="outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index" ng-if="showOutcome(outcome) || showOutcomePlaceholder(outcome)" ng-class="{'col-md-8 col-sm-8 col-xs-8': market.has2ColumnsSnakeLayout, 'draw': displayDraw}" class="ng-scope">
+    <!-- ngIf: showOutcome(outcome) --><button role="button" ng-click="toggleSelection()" ng-disabled="isDisabled()" ng-class="{
+    'suspended-outcome': isSuspended(),
+    'selected-outcome':  outcome.isSelected,
+    'line-restricted':   outcome.lineQualityDescription == lineQualityTypes.RESTRICTED || outcome.lineQualityDescription == lineQualityTypes.EARLY_LINE,
+    'line-enhanced':     outcome.lineQualityDescription == lineQualityTypes.ENHANCED,
+    'price-increase':    outcome.price.hasIncreased(),
+    'price-decrease':    outcome.price.hasDecreased(),
+    'enabled-outcome':  !isDisabled(),
+    'no-price':         !outcome.price
+  }" ng-if="showOutcome(outcome)" swc-marketline="marketline" swc-market="market" swc-outcome="outcome" class="ng-isolate-scope enabled-outcome">
+  <!-- ngIf: market.hasPropositionLayout -->
+  <!-- ngIf: event.isDefault && outcome.price.handicap --><span ng-if="event.isDefault &amp;&amp; outcome.price.handicap" class="ng-binding ng-scope">8</span><!-- end ngIf: event.isDefault && outcome.price.handicap -->
+  <span ng-bind="outcome | outcomePrice: {marketType: market.mainMarketType, placeholder: '-', showHandicap: !event.isDefault}" class="ng-binding">(-105)o</span>
+</button><!-- end ngIf: showOutcome(outcome) -->
+    <!-- ngIf: showOutcomePlaceholder(outcome) -->
+  </li><!-- end ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><!-- end ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index --><!-- ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><li ng-repeat="outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index" ng-if="showOutcome(outcome) || showOutcomePlaceholder(outcome)" ng-class="{'col-md-8 col-sm-8 col-xs-8': market.has2ColumnsSnakeLayout, 'draw': displayDraw}" class="ng-scope">
+    <!-- ngIf: showOutcome(outcome) --><button role="button" ng-click="toggleSelection()" ng-disabled="isDisabled()" ng-class="{
+    'suspended-outcome': isSuspended(),
+    'selected-outcome':  outcome.isSelected,
+    'line-restricted':   outcome.lineQualityDescription == lineQualityTypes.RESTRICTED || outcome.lineQualityDescription == lineQualityTypes.EARLY_LINE,
+    'line-enhanced':     outcome.lineQualityDescription == lineQualityTypes.ENHANCED,
+    'price-increase':    outcome.price.hasIncreased(),
+    'price-decrease':    outcome.price.hasDecreased(),
+    'enabled-outcome':  !isDisabled(),
+    'no-price':         !outcome.price
+  }" ng-if="showOutcome(outcome)" swc-marketline="marketline" swc-market="market" swc-outcome="outcome" class="ng-isolate-scope enabled-outcome">
+  <!-- ngIf: market.hasPropositionLayout -->
+  <!-- ngIf: event.isDefault && outcome.price.handicap --><span ng-if="event.isDefault &amp;&amp; outcome.price.handicap" class="ng-binding ng-scope">8</span><!-- end ngIf: event.isDefault && outcome.price.handicap -->
+  <span ng-bind="outcome | outcomePrice: {marketType: market.mainMarketType, placeholder: '-', showHandicap: !event.isDefault}" class="ng-binding">(-115)u</span>
+</button><!-- end ngIf: showOutcome(outcome) -->
+    <!-- ngIf: showOutcomePlaceholder(outcome) -->
+  </li><!-- end ngIf: showOutcome(outcome) || showOutcomePlaceholder(outcome) --><!-- end ngRepeat: outcome in outcomes | orderBy: outcomeOrder(marketline, market, isSimplified) track by $index -->
+</ul><!-- end ngRepeat: market in defaultMarkets track by $index -->
+</section>
